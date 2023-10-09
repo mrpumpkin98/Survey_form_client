@@ -4,10 +4,10 @@ import {
   View,
   StyleSheet,
   TextInput,
-  Image,
   Pressable,
   ScrollView,
 } from "react-native";
+import { Image } from "expo-image";
 import DismissKeyboardView from "../components/DismissKeyboardView";
 import ShortAnswer, { AnswerTypeItem } from "../components/ShortAnswer";
 import LongAnswer from "../components/LongAnswer";

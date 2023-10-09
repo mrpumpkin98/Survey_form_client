@@ -1,13 +1,7 @@
 import React, { useState, useEffect } from "react";
-import {
-  Text,
-  View,
-  StyleSheet,
-  TextInput,
-  Pressable,
-  Image,
-} from "react-native";
+import { Text, View, StyleSheet, TextInput, Pressable } from "react-native";
 import { AnswerTypeItem, ShortAnswerProps } from "./ShortAnswer";
+import { Image } from "expo-image";
 const checkbox = require("../../src/assets/checkbox.png");
 const down = require("../../src/assets/down.png");
 const cross = require("../../src/assets/cross-small.png");
@@ -173,6 +167,12 @@ export default function CheckBoxAnswer({ id }: ShortAnswerProps) {
     setSelectedAnswerTypes(updatedSelectedAnswerTypes);
   };
 
+  const handleCheckboxClick = (index: any) => {
+    const updatedCheckboxStates = [...checkboxStates];
+    updatedCheckboxStates[index] = !checkboxStates[index];
+    setCheckboxStates(updatedCheckboxStates);
+  };
+
   return (
     <>
       {!preview ? (
@@ -234,8 +234,10 @@ export default function CheckBoxAnswer({ id }: ShortAnswerProps) {
           {answerOptions.length === 0 ? (
             <View>
               <RNECheckBox
-                checked={false}
-                onPress={() => {}}
+                checked={checkboxStates[0]}
+                onPress={() => {
+                  handleCheckboxClick(0);
+                }}
                 title="옵션1"
                 containerStyle={styles.checkBox}
               />
@@ -245,11 +247,7 @@ export default function CheckBoxAnswer({ id }: ShortAnswerProps) {
               <View key={index}>
                 <RNECheckBox
                   checked={checkboxStates[index] || false}
-                  onPress={() => {
-                    const updatedCheckboxStates = [...checkboxStates];
-                    updatedCheckboxStates[index] = !checkboxStates[index];
-                    setCheckboxStates(updatedCheckboxStates);
-                  }}
+                  onPress={() => handleCheckboxClick(index)}
                   title={option.text}
                   containerStyle={styles.checkBox}
                 />

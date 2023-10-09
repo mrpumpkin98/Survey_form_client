@@ -1,14 +1,8 @@
 import React, { useState, useEffect } from "react";
-import {
-  Text,
-  View,
-  StyleSheet,
-  TextInput,
-  Pressable,
-  Image,
-} from "react-native";
+import { Text, View, StyleSheet, TextInput, Pressable } from "react-native";
 import { useRecoilState } from "recoil";
 import { selectedAnswerTypesState, previewState } from "../store";
+import { Image } from "expo-image";
 import generateRandomId from "./GenerateRandomId";
 const star = require("../../src/assets/star.png");
 const fullStar = require("../../src/assets/fullStar.png");

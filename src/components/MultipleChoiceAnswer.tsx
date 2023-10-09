@@ -1,12 +1,6 @@
 import React, { useState, useEffect } from "react";
-import {
-  Text,
-  View,
-  StyleSheet,
-  TextInput,
-  Pressable,
-  Image,
-} from "react-native";
+import { Text, View, StyleSheet, TextInput, Pressable } from "react-native";
+import { Image } from "expo-image";
 import { useRecoilState } from "recoil";
 import { previewState, selectedAnswerTypesState } from "../store";
 import { AnswerTypeItem, ShortAnswerProps } from "./ShortAnswer";
@@ -70,7 +64,7 @@ export default function MultipleChoiceAnswer({ id }: ShortAnswerProps) {
     const updatedSelectedAnswerTypes = selectedAnswerTypes.map((answerType) => {
       if (answerType.id === id) {
         const updatedAnswerOptions = { ...answerType.answerOptions };
-        delete updatedAnswerOptions[index]; // 해당 옵션 삭제
+        delete updatedAnswerOptions[index];
         return {
           ...answerType,
           answerOptions: updatedAnswerOptions,
@@ -251,8 +245,8 @@ export default function MultipleChoiceAnswer({ id }: ShortAnswerProps) {
           {answerOptions.length === 0 ? (
             <View>
               <RNECheckBox
-                checked={false}
-                onPress={() => {}}
+                checked={checkboxStates["옵션1"]}
+                onPress={() => handleCheckboxClick("옵션1")}
                 title="옵션1"
                 containerStyle={styles.checkBox}
               />

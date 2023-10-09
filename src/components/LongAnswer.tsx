@@ -1,12 +1,6 @@
 import React, { useState, useEffect } from "react";
-import {
-  Text,
-  View,
-  StyleSheet,
-  TextInput,
-  Pressable,
-  Image,
-} from "react-native";
+import { Text, View, StyleSheet, TextInput, Pressable } from "react-native";
+import { Image } from "expo-image";
 import { AnswerTypeItem, ShortAnswerProps } from "./ShortAnswer";
 import { useRecoilState } from "recoil";
 import { previewState, selectedAnswerTypesState } from "../store";
