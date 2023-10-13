@@ -3,16 +3,42 @@ import { Text, View, StyleSheet, Pressable } from "react-native";
 import ActionSheet, { ActionSheetRef } from "react-native-actions-sheet";
 import { Image } from "expo-image";
 import generateRandomId from "../components/GenerateRandomId";
+import { AnswerTypeItem } from "../components/ShortAnswer";
+import { useRecoilState } from "recoil";
+import { selectedAnswerTypesState } from "../store";
 
 const sortIcon = require("../../src/assets/sort.png");
 const longIcon = require("../../src/assets/long.png");
 const circleIcon = require("../../src/assets/circleIcon.png");
 const checkbox = require("../../src/assets/checkbox.png");
 
-export default function ActionSheetComponent({
-  actionSheetRef,
-  addAnswer,
-}: any) {
+type AnswerType =
+  | "ShortAnswer"
+  | "LongAnswer"
+  | "MultipleChoiceAnswer"
+  | "CheckBoxAnswer";
+
+export default function ActionSheetComponent({ actionSheetRef }: any) {
+  const [selectedAnswerTypes, setSelectedAnswerTypes] = useRecoilState(
+    selectedAnswerTypesState
+  );
+
+  const addAnswer = (answerType: AnswerType) => {
+    const id = generateRandomId();
+    const newAnswer: AnswerTypeItem = {
+      id,
+      answerType,
+      essential: false,
+      inputValue: "",
+      answerOptions: {},
+    };
+
+    setSelectedAnswerTypes([...selectedAnswerTypes, newAnswer]);
+    if (actionSheetRef.current) {
+      actionSheetRef.current.setModalVisible(false);
+    }
+  };
+
   return (
     <ActionSheet ref={actionSheetRef} containerStyle={styles.actionSheet}>
       <Text>More</Text>
