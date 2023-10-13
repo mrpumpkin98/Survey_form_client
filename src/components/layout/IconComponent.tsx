@@ -31,7 +31,7 @@ export default function IconComponent({ actionSheetRef }: any) {
           </Pressable>
         </View>
       ) : (
-        <View style={styles.icon}>
+        <View style={styles.iconPreview}>
           <Pressable
             style={styles.eyeIconPressable}
             onPress={() => setPreview((prevPreview) => !prevPreview)}
@@ -49,7 +49,15 @@ const styles = StyleSheet.create({
     position: "absolute",
     zIndex: 9999,
     right: 60,
-    top: 30,
+    top: 50,
+    display: "flex",
+    flexDirection: "row",
+  },
+  iconPreview: {
+    position: "absolute",
+    zIndex: 9999,
+    right: 35,
+    top: 50,
     display: "flex",
     flexDirection: "row",
   },
