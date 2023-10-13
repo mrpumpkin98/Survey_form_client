@@ -139,7 +139,12 @@ export default function ShortAnswer({ id }: ShortAnswerProps) {
       ) : (
         <View style={styles.container}>
           <View style={styles.titlePreview}>
-            <Text style={styles.textPreview}>{question}</Text>
+            {!question ? (
+              <Text style={styles.notTextPreview}>질문이 없습니다.</Text>
+            ) : (
+              <Text style={styles.textPreview}>{question}</Text>
+            )}
+
             {essential && (
               <Image source={fullStar} style={styles.fullStarPreview} />
             )}
@@ -209,6 +214,11 @@ const styles = StyleSheet.create({
   textPreview: {
     paddingTop: 10,
     paddingBottom: 15,
+  },
+  notTextPreview: {
+    paddingTop: 10,
+    paddingBottom: 15,
+    color: "#ccc",
   },
   fullStarPreview: {
     width: 7,
