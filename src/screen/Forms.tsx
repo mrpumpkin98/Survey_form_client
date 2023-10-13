@@ -1,19 +1,11 @@
-import React, { useState, useRef, useEffect } from "react";
-import {
-  Text,
-  View,
-  StyleSheet,
-  TextInput,
-  Pressable,
-  ScrollView,
-} from "react-native";
-import { Image } from "expo-image";
+import React, { useState, useRef } from "react";
+import { Text, View, StyleSheet, TextInput } from "react-native";
 import DismissKeyboardView from "../components/DismissKeyboardView";
 import ShortAnswer, { AnswerTypeItem } from "../components/ShortAnswer";
 import LongAnswer from "../components/LongAnswer";
 import MultipleChoiceAnswer from "../components/MultipleChoiceAnswer";
 import CheckBoxAnswer from "../components/CheckBoxAnswer";
-import ActionSheet, { ActionSheetRef } from "react-native-actions-sheet";
+import { ActionSheetRef } from "react-native-actions-sheet";
 import { useRecoilState } from "recoil";
 import {
   selectedAnswerTypesState,
@@ -22,13 +14,8 @@ import {
   previewState,
 } from "../store/index";
 import generateRandomId from "../components/GenerateRandomId";
-
-const eyeIcon = require("../../src/assets/eye.png");
-const addIcon = require("../../src/assets/add.png");
-const sortIcon = require("../../src/assets/sort.png");
-const longIcon = require("../../src/assets/long.png");
-const circleIcon = require("../../src/assets/circleIcon.png");
-const checkbox = require("../../src/assets/checkbox.png");
+import ActionSheetComponent from "../components/ActionSheetComponent";
+import IconComponent from "../components/IconComponent";
 
 type AnswerType =
   | "ShortAnswer"
@@ -107,17 +94,10 @@ export default function Forms() {
     <>
       {!preview ? (
         <>
-          <View style={styles.icon}>
-            <Pressable style={styles.eyeIconPressable} onPress={onPreview}>
-              <Image source={eyeIcon} style={styles.eyeIcon} />
-            </Pressable>
-            <Pressable
-              onPress={openActionSheet}
-              style={styles.addIconPressable}
-            >
-              <Image source={addIcon} style={styles.addIcon} />
-            </Pressable>
-          </View>
+          <IconComponent
+            onPreview={onPreview}
+            openActionSheet={openActionSheet}
+          />
           <DismissKeyboardView>
             <View style={styles.container}>
               <Text style={styles.title}>{surveyTitle}</Text>
@@ -139,47 +119,17 @@ export default function Forms() {
               {renderSelectedAnswers()}
             </View>
           </DismissKeyboardView>
-          <ActionSheet ref={actionSheetRef} containerStyle={styles.actionSheet}>
-            <Text>More</Text>
-            <View style={styles.select}>
-              <Pressable
-                onPress={() => addAnswer("ShortAnswer")}
-                style={styles.Pressable}
-              >
-                <Image source={sortIcon} style={styles.sortIcon} />
-                <Text>단답형</Text>
-              </Pressable>
-              <Pressable
-                onPress={() => addAnswer("LongAnswer")}
-                style={styles.Pressable}
-              >
-                <Image source={longIcon} style={styles.longIcon} />
-                <Text>장문형</Text>
-              </Pressable>
-              <Pressable
-                onPress={() => addAnswer("MultipleChoiceAnswer")}
-                style={styles.Pressable}
-              >
-                <Image source={circleIcon} style={styles.circleIcon} />
-                <Text>객관식</Text>
-              </Pressable>
-              <Pressable
-                onPress={() => addAnswer("CheckBoxAnswer")}
-                style={styles.Pressable}
-              >
-                <Image source={checkbox} style={styles.checkbox} />
-                <Text>체크박스</Text>
-              </Pressable>
-            </View>
-          </ActionSheet>
+          <ActionSheetComponent
+            actionSheetRef={actionSheetRef}
+            addAnswer={addAnswer}
+          />
         </>
       ) : (
         <>
-          <View style={styles.icon}>
-            <Pressable style={styles.eyeIconPressable} onPress={onPreview}>
-              <Image source={eyeIcon} style={styles.eyeIcon} />
-            </Pressable>
-          </View>
+          <IconComponent
+            onPreview={onPreview}
+            openActionSheet={openActionSheet}
+          />
           <DismissKeyboardView>
             <View style={styles.container}>
               <Text style={styles.title}>{surveyTitle}</Text>
@@ -221,43 +171,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 33,
   },
-  checkbox: {
-    width: 22,
-    height: 22,
-    marginRight: 15,
-  },
-  sortIcon: {
-    width: 22,
-    height: 22,
-    marginRight: 15,
-  },
-  longIcon: {
-    width: 22,
-    height: 22,
-    marginRight: 15,
-  },
-  circleIcon: {
-    width: 22,
-    height: 22,
-    marginRight: 15,
-  },
-  eyeIcon: {
-    width: 25,
-    height: 25,
-  },
-  eyeIconPressable: {
-    width: 25,
-    height: 25,
-  },
-  addIconPressable: {
-    width: 25,
-    height: 25,
-  },
-  addIcon: {
-    width: 25,
-    height: 25,
-    marginLeft: 25,
-  },
   textInputContainer: {
     width: "100%",
     backgroundColor: "#fff",
@@ -281,12 +194,5 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 10,
     marginBottom: 10,
-  },
-  actionSheet: {
-    height: 300,
-    padding: 30,
-  },
-  select: {
-    padding: 15,
   },
 });
