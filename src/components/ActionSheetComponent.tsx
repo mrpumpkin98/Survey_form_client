@@ -1,6 +1,7 @@
 import React from "react";
-import { Text, View, StyleSheet, Pressable, Image } from "react-native";
+import { Text, View, StyleSheet, Pressable } from "react-native";
 import ActionSheet, { ActionSheetRef } from "react-native-actions-sheet";
+import { Image } from "expo-image";
 import generateRandomId from "../components/GenerateRandomId";
 
 const sortIcon = require("../../src/assets/sort.png");
