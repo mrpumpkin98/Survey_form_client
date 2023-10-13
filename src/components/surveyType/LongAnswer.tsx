@@ -153,16 +153,24 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginBottom: 10,
     padding: 15,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   input: {
     width: "100%",
     borderBottomWidth: 1,
-    borderColor: "#ccc",
+    borderColor: "#2D62EA",
     padding: 10,
     marginBottom: 15,
   },
   text: {
-    color: "#ccc",
+    color: "#6691FF",
   },
   pressableContainer: {
     display: "flex",
@@ -197,7 +205,7 @@ const styles = StyleSheet.create({
   inputPreview: {
     width: "90%",
     borderBottomWidth: 1,
-    borderColor: "#ccc",
+    borderColor: "#2D62EA",
     padding: 10,
     marginBottom: 15,
   },

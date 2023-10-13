@@ -57,41 +57,50 @@ export default function SurveyForm() {
   return (
     <>
       {!preview ? (
-        <DismissKeyboardView>
-          <View style={styles.container}>
-            <Text style={styles.title}>{surveyTitle}</Text>
-            <Text style={styles.description}>{surveyDescription}</Text>
-            <View style={styles.textInputContainer}>
-              <TextInput
-                style={styles.inputTitle}
-                onChangeText={handleTitleChange}
-                value={surveyTitle}
-                placeholder="설문지 제목"
-              />
-              <TextInput
-                style={styles.inputDescription}
-                onChangeText={handleDescriptionChange}
-                value={surveyDescription}
-                placeholder="설문지 설명"
-              />
+        <View style={styles.wrapper}>
+          <DismissKeyboardView>
+            <View style={styles.container}>
+              <Text style={styles.title}>{surveyTitle}</Text>
+              <Text style={styles.description}>{surveyDescription}</Text>
+              <View style={styles.textInputContainer}>
+                <TextInput
+                  style={styles.inputTitle}
+                  onChangeText={handleTitleChange}
+                  value={surveyTitle}
+                  placeholder="설문지 제목"
+                />
+                <TextInput
+                  style={styles.inputDescription}
+                  onChangeText={handleDescriptionChange}
+                  value={surveyDescription}
+                  placeholder="설문지 설명"
+                />
+              </View>
+              {renderSelectedAnswers()}
             </View>
-            {renderSelectedAnswers()}
-          </View>
-        </DismissKeyboardView>
+          </DismissKeyboardView>
+        </View>
       ) : (
-        <DismissKeyboardView>
-          <View style={styles.container}>
-            <Text style={styles.title}>{surveyTitle}</Text>
-            <Text style={styles.description}>{surveyDescription}</Text>
-            {renderSelectedAnswers()}
-          </View>
-        </DismissKeyboardView>
+        <View style={styles.wrapper}>
+          <DismissKeyboardView>
+            <View style={styles.container}>
+              <Text style={styles.title}>{surveyTitle}</Text>
+              <Text style={styles.description}>{surveyDescription}</Text>
+              {renderSelectedAnswers()}
+            </View>
+          </DismissKeyboardView>
+        </View>
       )}
     </>
   );
 }
 
 const styles = StyleSheet.create({
+  wrapper: {
+    flex: 1,
+    backgroundColor: "#F4F4F4",
+    paddingTop: 30,
+  },
   container: {
     flex: 1,
     padding: 20,
@@ -100,10 +109,13 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     marginBottom: 10,
+    color: "#2D62EA",
   },
   description: {
     fontSize: 16,
     marginBottom: 20,
+    paddingLeft: 2,
+    color: "#6691FF",
   },
   textInputContainer: {
     width: "100%",
@@ -111,11 +123,19 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginBottom: 10,
     padding: 15,
+    elevation: 5,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
   },
   inputTitle: {
     width: "100%",
     borderBottomWidth: 1,
-    borderColor: "#ccc",
+    borderColor: "#2D62EA",
     borderRadius: 5,
     padding: 10,
     marginBottom: 10,
@@ -124,7 +144,7 @@ const styles = StyleSheet.create({
   inputDescription: {
     width: "80%",
     borderBottomWidth: 1,
-    borderColor: "#ccc",
+    borderColor: "#2D62EA",
     borderRadius: 5,
     padding: 10,
     marginBottom: 10,

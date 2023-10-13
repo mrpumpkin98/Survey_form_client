@@ -271,11 +271,19 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginBottom: 10,
     padding: 15,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   input: {
     width: "100%",
     borderBottomWidth: 1,
-    borderColor: "#ccc",
+    borderColor: "#2D62EA",
     padding: 10,
     marginBottom: 15,
   },
@@ -301,7 +309,7 @@ const styles = StyleSheet.create({
   optionInput: {
     flex: 1,
     borderBottomWidth: 1,
-    borderColor: "#ccc",
+    borderColor: "#2D62EA",
     padding: 10,
   },
 
@@ -320,12 +328,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     borderBottomWidth: 1,
-    borderColor: "#ccc",
+    borderColor: "#2D62EA",
     padding: 10,
     marginBottom: 15,
   },
   addButtonLabel: {
     marginRight: 5,
+    color: "#6691FF",
   },
   pressableContainer: {
     display: "flex",
@@ -374,6 +383,8 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
+    borderColor: "#6691FF",
+    backgroundColor: "#fff",
   },
   notTextPreview: {
     paddingTop: 10,
