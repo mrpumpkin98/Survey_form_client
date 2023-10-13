@@ -7,13 +7,23 @@ import { Image } from "expo-image";
 const eyeIcon = require("../../src/assets/eye.png");
 const addIcon = require("../../src/assets/add.png");
 
-export default function IconComponent({ onPreview, openActionSheet }: any) {
+export default function IconComponent({ actionSheetRef }: any) {
   const [preview, setPreview] = useRecoilState(previewState);
+
+  const openActionSheet = () => {
+    if (actionSheetRef.current) {
+      actionSheetRef.current.setModalVisible(true);
+    }
+  };
+
   return (
     <>
       {!preview ? (
         <View style={styles.icon}>
-          <Pressable style={styles.eyeIconPressable} onPress={onPreview}>
+          <Pressable
+            style={styles.eyeIconPressable}
+            onPress={() => setPreview((prevPreview) => !prevPreview)}
+          >
             <Image source={eyeIcon} style={styles.eyeIcon} />
           </Pressable>
           <Pressable onPress={openActionSheet} style={styles.addIconPressable}>
@@ -22,7 +32,10 @@ export default function IconComponent({ onPreview, openActionSheet }: any) {
         </View>
       ) : (
         <View style={styles.icon}>
-          <Pressable style={styles.eyeIconPressable} onPress={onPreview}>
+          <Pressable
+            style={styles.eyeIconPressable}
+            onPress={() => setPreview((prevPreview) => !prevPreview)}
+          >
             <Image source={eyeIcon} style={styles.eyeIcon} />
           </Pressable>
         </View>
