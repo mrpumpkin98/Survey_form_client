@@ -9,7 +9,7 @@ export default function AppInner() {
     <NavigationContainer>
       <Stack.Navigator>
         <>
-          <Stack.Screen name="Forms" component={Forms} />
+          <Stack.Screen name="설문조사" component={Forms} />
         </>
       </Stack.Navigator>
     </NavigationContainer>
