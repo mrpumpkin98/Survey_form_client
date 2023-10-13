@@ -4,7 +4,7 @@ import { Image } from "expo-image";
 import { AnswerTypeItem, ShortAnswerProps } from "./ShortAnswer";
 import { useRecoilState } from "recoil";
 import { previewState, selectedAnswerTypesState } from "../../store";
-import generateRandomId from "../GenerateRandomId";
+import generateRandomId from "../../libraries/utils";
 const star = require("../../../src/assets/star.png");
 const fullStar = require("../../../src/assets/fullStar.png");
 const copy = require("../../../src/assets/copy.png");

@@ -3,7 +3,7 @@ import { Text, View, StyleSheet, TextInput, Pressable } from "react-native";
 import { useRecoilState } from "recoil";
 import { selectedAnswerTypesState, previewState } from "../../store";
 import { Image } from "expo-image";
-import generateRandomId from "../GenerateRandomId";
+import generateRandomId from "../../libraries/utils";
 const star = require("../../../src/assets/star.png");
 const fullStar = require("../../../src/assets/fullStar.png");
 const copy = require("../../../src/assets/copy.png");

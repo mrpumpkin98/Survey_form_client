@@ -11,8 +11,8 @@ const copy = require("../../../src/assets/copy.png");
 const trash = require("../../../src/assets/trash.png");
 import { useRecoilState } from "recoil";
 import { previewState, selectedAnswerTypesState } from "../../store";
-import generateRandomId from "../GenerateRandomId";
 import { CheckBox as RNECheckBox } from "react-native-elements";
+import generateRandomId from "../../libraries/utils";
 
 export default function CheckBoxAnswer({ id }: ShortAnswerProps) {
   const [answerOptions, setAnswerOptions] = useState<{ text: string }[]>([]);

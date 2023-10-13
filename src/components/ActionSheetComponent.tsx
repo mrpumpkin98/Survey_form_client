@@ -2,10 +2,10 @@ import React from "react";
 import { Text, View, StyleSheet, Pressable } from "react-native";
 import ActionSheet, { ActionSheetRef } from "react-native-actions-sheet";
 import { Image } from "expo-image";
-import generateRandomId from "../components/GenerateRandomId";
 import { AnswerTypeItem } from "./surveyType/ShortAnswer";
 import { useRecoilState } from "recoil";
 import { selectedAnswerTypesState } from "../store";
+import generateRandomId from "../libraries/utils";
 
 const sortIcon = require("../../src/assets/sort.png");
 const longIcon = require("../../src/assets/long.png");
