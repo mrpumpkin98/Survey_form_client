@@ -187,39 +187,6 @@ export default function Forms() {
               {renderSelectedAnswers()}
             </View>
           </DismissKeyboardView>
-          <ActionSheet ref={actionSheetRef} containerStyle={styles.actionSheet}>
-            <Text>More</Text>
-            <View style={styles.select}>
-              <Pressable
-                onPress={() => addAnswer("ShortAnswer")}
-                style={styles.Pressable}
-              >
-                <Image source={sortIcon} style={styles.sortIcon} />
-                <Text>단답형</Text>
-              </Pressable>
-              <Pressable
-                onPress={() => addAnswer("LongAnswer")}
-                style={styles.Pressable}
-              >
-                <Image source={longIcon} style={styles.longIcon} />
-                <Text>장문형</Text>
-              </Pressable>
-              <Pressable
-                onPress={() => addAnswer("MultipleChoiceAnswer")}
-                style={styles.Pressable}
-              >
-                <Image source={circleIcon} style={styles.circleIcon} />
-                <Text>객관식</Text>
-              </Pressable>
-              <Pressable
-                onPress={() => addAnswer("CheckBoxAnswer")}
-                style={styles.Pressable}
-              >
-                <Image source={checkbox} style={styles.checkbox} />
-                <Text>체크박스</Text>
-              </Pressable>
-            </View>
-          </ActionSheet>
         </>
       )}
     </>
