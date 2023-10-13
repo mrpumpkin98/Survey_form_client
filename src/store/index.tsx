@@ -1,5 +1,5 @@
 import { atom } from "recoil";
-import { AnswerTypeItem } from "../components/ShortAnswer";
+import { AnswerTypeItem } from "../components/surveyType/ShortAnswer";
 
 export const selectedAnswerTypesState = atom<AnswerTypeItem[]>({
   key: "selectedAnswerTypesState",
