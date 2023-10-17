@@ -2,17 +2,18 @@ import React, { useState, useEffect } from "react";
 import { Text, View, StyleSheet, TextInput, Pressable } from "react-native";
 import { AnswerTypeItem, ShortAnswerProps } from "./ShortAnswer";
 import { Image } from "expo-image";
-const checkbox = require("../../../src/assets/checkbox.png");
-const down = require("../../../src/assets/down.png");
-const cross = require("../../../src/assets/cross-small.png");
-const star = require("../../../src/assets/star.png");
-const fullStar = require("../../../src/assets/fullStar.png");
-const copy = require("../../../src/assets/copy.png");
-const trash = require("../../../src/assets/trash.png");
 import { useRecoilState } from "recoil";
 import { previewState, selectedAnswerTypesState } from "../../store";
 import { CheckBox as RNECheckBox } from "react-native-elements";
-import generateRandomId from "../../libraries/utils";
+import * as ImageComponent from "../../libraries/ImageComponent";
+import { useAnswerOptionUpdater } from "../../hooks/useAnswerOptionUpdater";
+import { useUpdated } from "../../hooks/useUpdated";
+import { useChoiceCopy } from "../../hooks/useChoiceCopy";
+import { useToggleEssential } from "../../hooks/useToggleEssential";
+import { useHandleCheckboxClick } from "../../hooks/useHandleCheckboxClick";
+import { useDelete } from "../../hooks/useDelete";
+import { useDeleteAnswerOption } from "../../hooks/useDeleteAnswerOption";
+import { useAddAnswerOption } from "../../hooks/useAddAnswerOption";
 
 export default function CheckBoxAnswer({ id }: ShortAnswerProps) {
   const [answerOptions, setAnswerOptions] = useState<{ text: string }[]>([]);
@@ -31,7 +32,6 @@ export default function CheckBoxAnswer({ id }: ShortAnswerProps) {
     if (answer) {
       setQuestion(answer.inputValue);
       setEssential(answer.essential);
-      // answerOptions를 조회
       const { answerOptions } = answer;
       if (answerOptions) {
         const options = [];
@@ -45,133 +45,42 @@ export default function CheckBoxAnswer({ id }: ShortAnswerProps) {
     }
   }, [selectedAnswerTypes, id]);
 
-  const addAnswerOption = () => {
-    const newOption = { text: "" };
-    setAnswerOptions([...answerOptions, newOption]);
-  };
+  const { toggleEssential } = useToggleEssential(id, selectedAnswerTypes);
 
-  const deleteAnswerOption = (index: any) => {
-    const updatedOptions = [...answerOptions];
-    updatedOptions.splice(index, 1);
-    setAnswerOptions(updatedOptions);
+  const { onCopy } = useChoiceCopy(
+    id,
+    selectedAnswerTypes,
+    question,
+    answerOptions
+  );
 
-    const updatedSelectedAnswerTypes = selectedAnswerTypes.map((answerType) => {
-      if (answerType.id === id) {
-        const updatedAnswerOptions = { ...answerType.answerOptions };
-        delete updatedAnswerOptions[index]; // 해당 옵션 삭제
-        return {
-          ...answerType,
-          answerOptions: updatedAnswerOptions,
-        };
-      }
-      return answerType;
-    });
-    setSelectedAnswerTypes(updatedSelectedAnswerTypes);
-  };
+  const { onDelete } = useDelete(id, selectedAnswerTypes);
 
-  const onDelete = () => {
-    const updatedSelectedAnswerTypes = selectedAnswerTypes.filter(
-      (answerType) => answerType.id !== id
-    );
-    setSelectedAnswerTypes(updatedSelectedAnswerTypes);
-  };
+  const { updated } = useUpdated(id, setQuestion, selectedAnswerTypes);
 
-  const toggleEssential = () => {
-    const updatedSelectedAnswerTypes = selectedAnswerTypes.map((answerType) => {
-      if (answerType.id === id) {
-        return {
-          ...answerType,
-          essential: !answerType.essential,
-        };
-      }
-      return answerType;
-    });
-    setSelectedAnswerTypes(updatedSelectedAnswerTypes);
-  };
+  const { addAnswerOption } = useAddAnswerOption(
+    setAnswerOptions,
+    answerOptions
+  );
 
-  const onCopy = () => {
-    const updatedSelectedAnswerTypes = selectedAnswerTypes.map((answerType) => {
-      if (answerType.id === id) {
-        const newAnswerOptions: { [key: number]: string } = {};
-        answerOptions.forEach((option, index) => {
-          newAnswerOptions[index] = option.text;
-        });
+  const { deleteAnswerOption } = useDeleteAnswerOption(
+    id,
+    selectedAnswerTypes,
+    answerOptions,
+    setAnswerOptions
+  );
 
-        return {
-          ...answerType,
-          inputValue: question,
-          answerOptions: newAnswerOptions, // answerOptions 추가
-        };
-      }
-      return answerType;
-    });
+  const { updateAnswerOption } = useAnswerOptionUpdater(
+    id,
+    answerOptions,
+    setAnswerOptions,
+    selectedAnswerTypes
+  );
 
-    const copiedAnswer = selectedAnswerTypes.find(
-      (answerType) => answerType.id === id
-    );
-    if (copiedAnswer) {
-      const newAnswerOptions: { [key: number]: string } = {};
-      answerOptions.forEach((option, index) => {
-        newAnswerOptions[index] = option.text;
-      });
-      const newId = generateRandomId();
-      const copiedAnswerWithNewId = {
-        ...copiedAnswer,
-        id: newId,
-        inputValue: question,
-        answerOptions: newAnswerOptions, // answerOptions 추가
-      };
-
-      // 새로운 항목을 원하는 위치에 추가
-      const index = updatedSelectedAnswerTypes.findIndex(
-        (answerType) => answerType.id === id
-      );
-      const updatedList = [...updatedSelectedAnswerTypes];
-      updatedList.splice(index + 1, 0, copiedAnswerWithNewId);
-
-      setSelectedAnswerTypes(updatedList);
-    }
-  };
-
-  const updated = (text: string) => {
-    setQuestion(text);
-    const updatedSelectedAnswerTypes = selectedAnswerTypes.map((answerType) => {
-      if (answerType.id === id) {
-        return {
-          ...answerType,
-          inputValue: text,
-        };
-      }
-      return answerType;
-    });
-    setSelectedAnswerTypes(updatedSelectedAnswerTypes);
-  };
-
-  const updateAnswerOption = (index: number, text: string) => {
-    const updatedOptions = [...answerOptions];
-    updatedOptions[index].text = text;
-    setAnswerOptions(updatedOptions);
-
-    const updatedSelectedAnswerTypes = selectedAnswerTypes.map((answerType) => {
-      if (answerType.id === id) {
-        return {
-          ...answerType,
-          answerOptions: {
-            ...answerType.answerOptions,
-            [index]: text,
-          },
-        };
-      }
-      return answerType;
-    });
-    setSelectedAnswerTypes(updatedSelectedAnswerTypes);
-  };
-
-  const handleCheckboxClick = (index: any) => {
-    const updatedCheckboxStates = [...checkboxStates];
-    updatedCheckboxStates[index] = !checkboxStates[index];
-    setCheckboxStates(updatedCheckboxStates);
-  };
+  const { handleCheckboxClick } = useHandleCheckboxClick(
+    checkboxStates,
+    setCheckboxStates
+  );
 
   return (
     <>
@@ -185,7 +94,7 @@ export default function CheckBoxAnswer({ id }: ShortAnswerProps) {
           />
           {answerOptions.map((option, index) => (
             <View key={index} style={styles.optionContainer}>
-              <Image source={checkbox} style={styles.checkbox} />
+              <Image source={ImageComponent.checkbox} style={styles.checkbox} />
               <TextInput
                 style={styles.optionInput}
                 placeholder={`옵션 ${index + 1}`}
@@ -196,29 +105,32 @@ export default function CheckBoxAnswer({ id }: ShortAnswerProps) {
                 style={styles.deleteButton}
                 onPress={() => deleteAnswerOption(index)}
               >
-                <Image source={cross} style={styles.cross} />
+                <Image source={ImageComponent.cross} style={styles.cross} />
               </Pressable>
             </View>
           ))}
           <Pressable style={styles.addButton} onPress={addAnswerOption}>
             <Text style={styles.addButtonLabel}>옵션 추가</Text>
-            <Image source={down} style={styles.downIcon} />
+            <Image source={ImageComponent.down} style={styles.downIcon} />
           </Pressable>
           <View style={styles.pressableContainer}>
             <Pressable style={styles.pressable} onPress={onCopy}>
-              <Image source={copy} style={styles.copy} />
+              <Image source={ImageComponent.copy} style={styles.copy} />
             </Pressable>
             <Pressable style={styles.pressable} onPress={onDelete}>
-              <Image source={trash} style={styles.trash} />
+              <Image source={ImageComponent.trash} style={styles.trash} />
             </Pressable>
             <Pressable
               style={styles.pressableEssential}
               onPress={toggleEssential}
             >
               {!essential ? (
-                <Image source={star} style={styles.star} />
+                <Image source={ImageComponent.star} style={styles.star} />
               ) : (
-                <Image source={fullStar} style={styles.fullStar} />
+                <Image
+                  source={ImageComponent.fullStar}
+                  style={styles.fullStar}
+                />
               )}
             </Pressable>
           </View>
@@ -232,7 +144,10 @@ export default function CheckBoxAnswer({ id }: ShortAnswerProps) {
               <Text style={styles.textPreview}>{question}</Text>
             )}
             {essential && (
-              <Image source={fullStar} style={styles.fullStarPreview} />
+              <Image
+                source={ImageComponent.fullStar}
+                style={styles.fullStarPreview}
+              />
             )}
           </View>
           {answerOptions.length === 0 ? (
