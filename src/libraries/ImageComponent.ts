@@ -1,0 +1,12 @@
+export const checkbox = require("../../src/assets/checkbox.png");
+export const circleIcon = require("../../src/assets/circleIcon.png");
+export const down = require("../../src/assets/down.png");
+export const cross = require("../../src/assets/cross-small.png");
+export const star = require("../../src/assets/star.png");
+export const fullStar = require("../../src/assets/fullStar.png");
+export const copy = require("../../src/assets/copy.png");
+export const trash = require("../../src/assets/trash.png");
+export const eyeIcon = require("../../src/assets/eye.png");
+export const addIcon = require("../../src/assets/add.png");
+export const sortIcon = require("../../src/assets/sort.png");
+export const longIcon = require("../../src/assets/long.png");

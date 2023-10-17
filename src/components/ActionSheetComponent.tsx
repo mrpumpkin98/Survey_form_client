@@ -6,11 +6,7 @@ import { AnswerTypeItem } from "./surveyType/ShortAnswer";
 import { useRecoilState } from "recoil";
 import { selectedAnswerTypesState } from "../store";
 import generateRandomId from "../libraries/utils";
-
-const sortIcon = require("../../src/assets/sort.png");
-const longIcon = require("../../src/assets/long.png");
-const circleIcon = require("../../src/assets/circleIcon.png");
-const checkbox = require("../../src/assets/checkbox.png");
+import * as ImageComponent from "../libraries/ImageComponent";
 
 type AnswerType =
   | "ShortAnswer"
@@ -47,28 +43,28 @@ export default function ActionSheetComponent({ actionSheetRef }: any) {
           onPress={() => addAnswer("ShortAnswer")}
           style={styles.Pressable}
         >
-          <Image source={sortIcon} style={styles.sortIcon} />
+          <Image source={ImageComponent.sortIcon} style={styles.sortIcon} />
           <Text>단답형</Text>
         </Pressable>
         <Pressable
           onPress={() => addAnswer("LongAnswer")}
           style={styles.Pressable}
         >
-          <Image source={longIcon} style={styles.longIcon} />
+          <Image source={ImageComponent.longIcon} style={styles.longIcon} />
           <Text>장문형</Text>
         </Pressable>
         <Pressable
           onPress={() => addAnswer("MultipleChoiceAnswer")}
           style={styles.Pressable}
         >
-          <Image source={circleIcon} style={styles.circleIcon} />
+          <Image source={ImageComponent.circleIcon} style={styles.circleIcon} />
           <Text>객관식</Text>
         </Pressable>
         <Pressable
           onPress={() => addAnswer("CheckBoxAnswer")}
           style={styles.Pressable}
         >
-          <Image source={checkbox} style={styles.checkbox} />
+          <Image source={ImageComponent.checkbox} style={styles.checkbox} />
           <Text>체크박스</Text>
         </Pressable>
       </View>

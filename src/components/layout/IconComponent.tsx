@@ -3,9 +3,7 @@ import { View, StyleSheet, Pressable } from "react-native";
 import { useRecoilState } from "recoil";
 import { previewState } from "../../store";
 import { Image } from "expo-image";
-
-const eyeIcon = require("../../../src/assets/eye.png");
-const addIcon = require("../../../src/assets/add.png");
+import * as ImageComponent from "../../libraries/ImageComponent";
 
 export default function IconComponent({ actionSheetRef }: any) {
   const [preview, setPreview] = useRecoilState(previewState);
@@ -24,10 +22,10 @@ export default function IconComponent({ actionSheetRef }: any) {
             style={styles.eyeIconPressable}
             onPress={() => setPreview((prevPreview) => !prevPreview)}
           >
-            <Image source={eyeIcon} style={styles.eyeIcon} />
+            <Image source={ImageComponent.eyeIcon} style={styles.eyeIcon} />
           </Pressable>
           <Pressable onPress={openActionSheet} style={styles.addIconPressable}>
-            <Image source={addIcon} style={styles.addIcon} />
+            <Image source={ImageComponent.addIcon} style={styles.addIcon} />
           </Pressable>
         </View>
       ) : (
@@ -36,7 +34,7 @@ export default function IconComponent({ actionSheetRef }: any) {
             style={styles.eyeIconPressable}
             onPress={() => setPreview((prevPreview) => !prevPreview)}
           >
-            <Image source={eyeIcon} style={styles.eyeIcon} />
+            <Image source={ImageComponent.eyeIcon} style={styles.eyeIcon} />
           </Pressable>
         </View>
       )}
