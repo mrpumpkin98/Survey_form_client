@@ -3,11 +3,11 @@ import { Text, View, StyleSheet, TextInput, Pressable } from "react-native";
 import { useRecoilState } from "recoil";
 import { selectedAnswerTypesState, previewState } from "../../store";
 import { Image } from "expo-image";
-import generateRandomId from "../../libraries/utils";
-const star = require("../../../src/assets/star.png");
-const fullStar = require("../../../src/assets/fullStar.png");
-const copy = require("../../../src/assets/copy.png");
-const trash = require("../../../src/assets/trash.png");
+import * as ImageComponent from "../../libraries/ImageComponent";
+import { useUpdated } from "../../hooks/useUpdated";
+import { useToggleEssential } from "../../hooks/useToggleEssential";
+import { useSubjectiveCopy } from "../../hooks/useSubjectiveCopy";
+import { useDelete } from "../../hooks/useDelete";
 
 export interface ShortAnswerProps {
   id: string;
@@ -39,72 +39,13 @@ export default function ShortAnswer({ id }: ShortAnswerProps) {
     }
   }, [selectedAnswerTypes, id]);
 
-  const Delete = () => {
-    const updatedSelectedAnswerTypes = selectedAnswerTypes.filter(
-      (answerType) => answerType.id !== id
-    );
-    setSelectedAnswerTypes(updatedSelectedAnswerTypes);
-  };
+  const { onDelete } = useDelete(id, selectedAnswerTypes);
 
-  const toggleEssential = () => {
-    const updatedSelectedAnswerTypes = selectedAnswerTypes.map((answerType) => {
-      if (answerType.id === id) {
-        return {
-          ...answerType,
-          essential: !answerType.essential,
-        };
-      }
-      return answerType;
-    });
-    setSelectedAnswerTypes(updatedSelectedAnswerTypes);
-  };
+  const { toggleEssential } = useToggleEssential(id, selectedAnswerTypes);
 
-  const onCopy = () => {
-    const updatedSelectedAnswerTypes = selectedAnswerTypes.map((answerType) => {
-      if (answerType.id === id) {
-        return {
-          ...answerType,
-          inputValue: question,
-        };
-      }
-      return answerType;
-    });
+  const { onCopy } = useSubjectiveCopy(id, selectedAnswerTypes, question);
 
-    const copiedAnswer = selectedAnswerTypes.find(
-      (answerType) => answerType.id === id
-    );
-    if (copiedAnswer) {
-      const newId = generateRandomId();
-      const copiedAnswerWithNewId = {
-        ...copiedAnswer,
-        id: newId,
-        inputValue: question,
-      };
-
-      // 새로운 항목을 원하는 위치에 추가
-      const index = updatedSelectedAnswerTypes.findIndex(
-        (answerType) => answerType.id === id
-      );
-      const updatedList = [...updatedSelectedAnswerTypes];
-      updatedList.splice(index + 1, 0, copiedAnswerWithNewId);
-
-      setSelectedAnswerTypes(updatedList);
-    }
-  };
-
-  const updated = (text: string) => {
-    setQuestion(text);
-    const updatedSelectedAnswerTypes = selectedAnswerTypes.map((answerType) => {
-      if (answerType.id === id) {
-        return {
-          ...answerType,
-          inputValue: text,
-        };
-      }
-      return answerType;
-    });
-    setSelectedAnswerTypes(updatedSelectedAnswerTypes);
-  };
+  const { updated } = useUpdated(id, setQuestion, selectedAnswerTypes);
 
   return (
     <>
@@ -119,19 +60,22 @@ export default function ShortAnswer({ id }: ShortAnswerProps) {
           <Text style={styles.text}> 단답형 텍스트</Text>
           <View style={styles.pressableContainer}>
             <Pressable style={styles.pressable} onPress={onCopy}>
-              <Image source={copy} style={styles.copy} />
+              <Image source={ImageComponent.copy} style={styles.copy} />
             </Pressable>
-            <Pressable style={styles.pressable} onPress={Delete}>
-              <Image source={trash} style={styles.trash} />
+            <Pressable style={styles.pressable} onPress={onDelete}>
+              <Image source={ImageComponent.trash} style={styles.trash} />
             </Pressable>
             <Pressable
               style={styles.pressableEssential}
               onPress={toggleEssential}
             >
               {!essential ? (
-                <Image source={star} style={styles.star} />
+                <Image source={ImageComponent.star} style={styles.star} />
               ) : (
-                <Image source={fullStar} style={styles.fullStar} />
+                <Image
+                  source={ImageComponent.fullStar}
+                  style={styles.fullStar}
+                />
               )}
             </Pressable>
           </View>
@@ -146,7 +90,10 @@ export default function ShortAnswer({ id }: ShortAnswerProps) {
             )}
 
             {essential && (
-              <Image source={fullStar} style={styles.fullStarPreview} />
+              <Image
+                source={ImageComponent.fullStar}
+                style={styles.fullStarPreview}
+              />
             )}
           </View>
           <TextInput style={styles.inputPreview} placeholder="내 답변" />
