@@ -5,14 +5,15 @@ import { useRecoilState } from "recoil";
 import { previewState, selectedAnswerTypesState } from "../../store";
 import { AnswerTypeItem, ShortAnswerProps } from "./ShortAnswer";
 import { CheckBox as RNECheckBox } from "react-native-elements";
-import generateRandomId from "../../libraries/utils";
-const circleIcon = require("../../../src/assets/circleIcon.png");
-const down = require("../../../src/assets/down.png");
-const cross = require("../../../src/assets/cross-small.png");
-const star = require("../../../src/assets/star.png");
-const fullStar = require("../../../src/assets/fullStar.png");
-const copy = require("../../../src/assets/copy.png");
-const trash = require("../../../src/assets/trash.png");
+import * as ImageComponent from "../../libraries/ImageComponent";
+import { useAnswerOptionUpdater } from "../../hooks/useAnswerOptionUpdater";
+import { useUpdated } from "../../hooks/useUpdated";
+import { useChoiceCopy } from "../../hooks/useChoiceCopy";
+import { useToggleEssential } from "../../hooks/useToggleEssential";
+import { useDelete } from "../../hooks/useDelete";
+import { useDeleteAnswerOption } from "../../hooks/useDeleteAnswerOption";
+import { useAddAnswerOption } from "../../hooks/useAddAnswerOption";
+import { useHandleMultipleChoiceClick } from "../../hooks/useHandleMultipleChoiceClick";
 
 export default function MultipleChoiceAnswer({ id }: ShortAnswerProps) {
   const [answerOptions, setAnswerOptions] = useState<
@@ -51,138 +52,42 @@ export default function MultipleChoiceAnswer({ id }: ShortAnswerProps) {
     }
   }, [selectedAnswerTypes, id]);
 
-  const addAnswerOption = () => {
-    const newOption = { text: "" };
-    setAnswerOptions([...answerOptions, newOption]);
-  };
+  const { toggleEssential } = useToggleEssential(id, selectedAnswerTypes);
 
-  const deleteAnswerOption = (index: any) => {
-    const updatedOptions = [...answerOptions];
-    updatedOptions.splice(index, 1);
-    setAnswerOptions(updatedOptions);
+  const { onDelete } = useDelete(id, selectedAnswerTypes);
 
-    const updatedSelectedAnswerTypes = selectedAnswerTypes.map((answerType) => {
-      if (answerType.id === id) {
-        const updatedAnswerOptions = { ...answerType.answerOptions };
-        delete updatedAnswerOptions[index];
-        return {
-          ...answerType,
-          answerOptions: updatedAnswerOptions,
-        };
-      }
-      return answerType;
-    });
-    setSelectedAnswerTypes(updatedSelectedAnswerTypes);
-  };
+  const { onCopy } = useChoiceCopy(
+    id,
+    selectedAnswerTypes,
+    question,
+    answerOptions
+  );
 
-  const onDelete = () => {
-    const updatedSelectedAnswerTypes = selectedAnswerTypes.filter(
-      (answerType) => answerType.id !== id
-    );
-    setSelectedAnswerTypes(updatedSelectedAnswerTypes);
-  };
+  const { updated } = useUpdated(id, setQuestion, selectedAnswerTypes);
 
-  const toggleEssential = () => {
-    const updatedSelectedAnswerTypes = selectedAnswerTypes.map((answerType) => {
-      if (answerType.id === id) {
-        return {
-          ...answerType,
-          essential: !answerType.essential,
-        };
-      }
-      return answerType;
-    });
-    setSelectedAnswerTypes(updatedSelectedAnswerTypes);
-  };
+  const { addAnswerOption } = useAddAnswerOption(
+    setAnswerOptions,
+    answerOptions
+  );
 
-  const onCopy = () => {
-    const updatedSelectedAnswerTypes = selectedAnswerTypes.map((answerType) => {
-      if (answerType.id === id) {
-        const newAnswerOptions: { [key: number]: string } = {};
-        answerOptions.forEach((option, index) => {
-          newAnswerOptions[index] = option.text;
-        });
+  const { deleteAnswerOption } = useDeleteAnswerOption(
+    id,
+    selectedAnswerTypes,
+    answerOptions,
+    setAnswerOptions
+  );
 
-        return {
-          ...answerType,
-          inputValue: question,
-          answerOptions: newAnswerOptions,
-        };
-      }
-      return answerType;
-    });
+  const { updateAnswerOption } = useAnswerOptionUpdater(
+    id,
+    answerOptions,
+    setAnswerOptions,
+    selectedAnswerTypes
+  );
 
-    const copiedAnswer = selectedAnswerTypes.find(
-      (answerType) => answerType.id === id
-    );
-    if (copiedAnswer) {
-      const newAnswerOptions: { [key: number]: string } = {};
-      answerOptions.forEach((option, index) => {
-        newAnswerOptions[index] = option.text;
-      });
-
-      const newId = generateRandomId();
-      const copiedAnswerWithNewId = {
-        ...copiedAnswer,
-        id: newId,
-        inputValue: question,
-        answerOptions: newAnswerOptions, // answerOptions 추가
-      };
-
-      const index = updatedSelectedAnswerTypes.findIndex(
-        (answerType) => answerType.id === id
-      );
-      const updatedList = [...updatedSelectedAnswerTypes];
-      updatedList.splice(index + 1, 0, copiedAnswerWithNewId);
-
-      setSelectedAnswerTypes(updatedList);
-    }
-  };
-
-  const updated = (text: string) => {
-    setQuestion(text);
-    const updatedSelectedAnswerTypes = selectedAnswerTypes.map((answerType) => {
-      if (answerType.id === id) {
-        return {
-          ...answerType,
-          inputValue: text,
-        };
-      }
-      return answerType;
-    });
-    setSelectedAnswerTypes(updatedSelectedAnswerTypes);
-  };
-
-  const updateAnswerOption = (index: number, text: string) => {
-    const updatedOptions = [...answerOptions];
-    updatedOptions[index].text = text;
-    setAnswerOptions(updatedOptions);
-
-    const updatedSelectedAnswerTypes = selectedAnswerTypes.map((answerType) => {
-      if (answerType.id === id) {
-        return {
-          ...answerType,
-          answerOptions: {
-            ...answerType.answerOptions,
-            [index]: text,
-          },
-        };
-      }
-      return answerType;
-    });
-    setSelectedAnswerTypes(updatedSelectedAnswerTypes);
-  };
-
-  const handleCheckboxClick = (checkboxId: any) => {
-    const updatedCheckboxStates = { ...checkboxStates };
-    updatedCheckboxStates[checkboxId] = !updatedCheckboxStates[checkboxId];
-    for (const key in updatedCheckboxStates) {
-      if (key !== checkboxId) {
-        updatedCheckboxStates[key] = false;
-      }
-    }
-    setCheckboxStates(updatedCheckboxStates);
-  };
+  const { handleMultipleChoiceClick } = useHandleMultipleChoiceClick(
+    checkboxStates,
+    setCheckboxStates
+  );
 
   return (
     <>
@@ -196,7 +101,10 @@ export default function MultipleChoiceAnswer({ id }: ShortAnswerProps) {
           />
           {answerOptions.map((option, index) => (
             <View key={index} style={styles.optionContainer}>
-              <Image source={circleIcon} style={styles.circleIcon} />
+              <Image
+                source={ImageComponent.circleIcon}
+                style={styles.circleIcon}
+              />
               <TextInput
                 style={styles.optionInput}
                 placeholder={`옵션 ${index + 1}`}
@@ -207,29 +115,32 @@ export default function MultipleChoiceAnswer({ id }: ShortAnswerProps) {
                 style={styles.deleteButton}
                 onPress={() => deleteAnswerOption(index)}
               >
-                <Image source={cross} style={styles.cross} />
+                <Image source={ImageComponent.cross} style={styles.cross} />
               </Pressable>
             </View>
           ))}
           <Pressable style={styles.addButton} onPress={addAnswerOption}>
             <Text style={styles.addButtonLabel}>옵션 추가</Text>
-            <Image source={down} style={styles.downIcon} />
+            <Image source={ImageComponent.down} style={styles.downIcon} />
           </Pressable>
           <View style={styles.pressableContainer}>
             <Pressable style={styles.pressable} onPress={onCopy}>
-              <Image source={copy} style={styles.copy} />
+              <Image source={ImageComponent.copy} style={styles.copy} />
             </Pressable>
             <Pressable style={styles.pressable} onPress={onDelete}>
-              <Image source={trash} style={styles.trash} />
+              <Image source={ImageComponent.trash} style={styles.trash} />
             </Pressable>
             <Pressable
               style={styles.pressableEssential}
               onPress={toggleEssential}
             >
               {!essential ? (
-                <Image source={star} style={styles.star} />
+                <Image source={ImageComponent.star} style={styles.star} />
               ) : (
-                <Image source={fullStar} style={styles.fullStar} />
+                <Image
+                  source={ImageComponent.fullStar}
+                  style={styles.fullStar}
+                />
               )}
             </Pressable>
           </View>
@@ -243,14 +154,17 @@ export default function MultipleChoiceAnswer({ id }: ShortAnswerProps) {
               <Text style={styles.textPreview}>{question}</Text>
             )}
             {essential && (
-              <Image source={fullStar} style={styles.fullStarPreview} />
+              <Image
+                source={ImageComponent.fullStar}
+                style={styles.fullStarPreview}
+              />
             )}
           </View>
           {answerOptions.length === 0 ? (
             <View>
               <RNECheckBox
                 checked={checkboxStates["옵션1"]}
-                onPress={() => handleCheckboxClick("옵션1")}
+                onPress={() => handleMultipleChoiceClick("옵션1")}
                 title="옵션1"
                 containerStyle={styles.checkBox}
               />
@@ -260,7 +174,7 @@ export default function MultipleChoiceAnswer({ id }: ShortAnswerProps) {
               <View key={index}>
                 <RNECheckBox
                   checked={checkboxStates[option.id] || false}
-                  onPress={() => handleCheckboxClick(option.id)}
+                  onPress={() => handleMultipleChoiceClick(option.id)}
                   title={option.text}
                   containerStyle={styles.checkBox}
                 />
