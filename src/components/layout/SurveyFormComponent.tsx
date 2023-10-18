@@ -13,7 +13,7 @@ import LongAnswer from "../surveyType/LongAnswer";
 import MultipleChoiceAnswer from "../surveyType/MultipleChoiceAnswer";
 import CheckBoxAnswer from "../surveyType/CheckBoxAnswer";
 
-export default function SurveyForm() {
+export default function SurveyFormComponent() {
   const [surveyTitle, setSurveyTitle] = useState("제목 없는 설문지");
   const [surveyDescription, setSurveyDescription] = useState("");
   const [preview, setPreview] = useRecoilState(previewState);
