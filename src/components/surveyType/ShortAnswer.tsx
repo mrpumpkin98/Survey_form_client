@@ -39,12 +39,16 @@ export default function ShortAnswer({ id }: ShortAnswerProps) {
     }
   }, [selectedAnswerTypes, id]);
 
-  const { onDelete } = useDelete(id, selectedAnswerTypes);
-
+  // @NOTE: 설문 필수
   const { toggleEssential } = useToggleEssential(id, selectedAnswerTypes);
 
+  // @NOTE: 설문 삭제
+  const { onDelete } = useDelete(id, selectedAnswerTypes);
+
+  // @NOTE: 설문 복사
   const { onCopy } = useSubjectiveCopy(id, selectedAnswerTypes, question);
 
+  // @NOTE: 설문 내용 입력시 recoil에 업데이트
   const { updated } = useUpdated(id, setQuestion, selectedAnswerTypes);
 
   return (

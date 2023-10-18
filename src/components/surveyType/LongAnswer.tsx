@@ -4,14 +4,11 @@ import { Image } from "expo-image";
 import { AnswerTypeItem, ShortAnswerProps } from "./ShortAnswer";
 import { useRecoilState } from "recoil";
 import { previewState, selectedAnswerTypesState } from "../../store";
-import generateRandomId from "../../libraries/utils";
 import * as ImageComponent from "../../libraries/ImageComponent";
 import { useUpdated } from "../../hooks/useUpdated";
 import { useToggleEssential } from "../../hooks/useToggleEssential";
 import { useSubjectiveCopy } from "../../hooks/useSubjectiveCopy";
 import { useDelete } from "../../hooks/useDelete";
-
-interface componentNameProps {}
 
 export default function LongAnswer({ id }: ShortAnswerProps) {
   const [selectedAnswerTypes, setSelectedAnswerTypes] = useRecoilState<
@@ -31,12 +28,16 @@ export default function LongAnswer({ id }: ShortAnswerProps) {
     }
   }, [selectedAnswerTypes, id]);
 
-  const { onDelete } = useDelete(id, selectedAnswerTypes);
-
+  // @NOTE: 설문 필수
   const { toggleEssential } = useToggleEssential(id, selectedAnswerTypes);
 
+  // @NOTE: 설문 삭제
+  const { onDelete } = useDelete(id, selectedAnswerTypes);
+
+  // @NOTE: 설문 복사
   const { onCopy } = useSubjectiveCopy(id, selectedAnswerTypes, question);
 
+  // @NOTE: 설문 내용 입력시 recoil에 업데이트
   const { updated } = useUpdated(id, setQuestion, selectedAnswerTypes);
 
   return (

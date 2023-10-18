@@ -52,10 +52,13 @@ export default function MultipleChoiceAnswer({ id }: ShortAnswerProps) {
     }
   }, [selectedAnswerTypes, id]);
 
+  // @NOTE: 설문 필수
   const { toggleEssential } = useToggleEssential(id, selectedAnswerTypes);
 
+  // @NOTE: 설문 삭제
   const { onDelete } = useDelete(id, selectedAnswerTypes);
 
+  // @NOTE: 설문 복사
   const { onCopy } = useChoiceCopy(
     id,
     selectedAnswerTypes,
@@ -63,13 +66,16 @@ export default function MultipleChoiceAnswer({ id }: ShortAnswerProps) {
     answerOptions
   );
 
+  // @NOTE: 설문 내용 입력시 recoil에 업데이트
   const { updated } = useUpdated(id, setQuestion, selectedAnswerTypes);
 
+  // @NOTE: 객관식 옵션 추가
   const { addAnswerOption } = useAddAnswerOption(
     setAnswerOptions,
     answerOptions
   );
 
+  // @NOTE: 객관식 옵션 삭제
   const { deleteAnswerOption } = useDeleteAnswerOption(
     id,
     selectedAnswerTypes,
@@ -77,6 +83,7 @@ export default function MultipleChoiceAnswer({ id }: ShortAnswerProps) {
     setAnswerOptions
   );
 
+  // @NOTE: 객관식 옵션 내용 입력
   const { updateAnswerOption } = useAnswerOptionUpdater(
     id,
     answerOptions,
@@ -84,6 +91,7 @@ export default function MultipleChoiceAnswer({ id }: ShortAnswerProps) {
     selectedAnswerTypes
   );
 
+  // @NOTE: 중복 체크 금지
   const { handleMultipleChoiceClick } = useHandleMultipleChoiceClick(
     checkboxStates,
     setCheckboxStates
