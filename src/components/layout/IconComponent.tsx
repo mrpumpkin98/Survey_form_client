@@ -21,6 +21,7 @@ export default function IconComponent({ actionSheetRef }: any) {
           <Pressable
             style={styles.eyeIconPressable}
             onPress={() => setPreview((prevPreview) => !prevPreview)}
+            testID="eyeIconPressable"
           >
             <Image source={ImageComponent.eyeIcon} style={styles.eyeIcon} />
           </Pressable>
