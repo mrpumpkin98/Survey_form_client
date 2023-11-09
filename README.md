@@ -43,10 +43,6 @@
 - recoil을 활용해 글로벌 state로 모든 상태를 관리
 - 설문 타입 설정은 구글 설문과 다르게 ActionSheet로 구성(아래에서 올라오는 ActionSheet를 활용)
 
-## 구현 기능 시연 영상
-
-![Peek 2023-10-10 12-25](https://github.com/mrpumpkin98/Frontend-Study/assets/114569429/c37a4174-33e6-4d89-8a78-155d6af0ae48)
-
 ## 고민 한 점/아쉬운 점
 
 **1. 이미지 렌더링 최적화**
@@ -58,3 +54,30 @@
 - Jest를 통해 철저한 단위 테스트를 구현하고, 신속한 코드 변경 사항 검증 및 피드백 확보
 - 상태 관리 라이브러리와 테스트 코드의 효율적인 결합으로 애플리케이션 상태 관리의 안정성과 신뢰성 강화
 - 테스트 코드 작성을 통해 코드 품질 향상과 버그 조기 예방의 전문적인 경험을 적용 및 증진
+
+## 구현 기능 시연 영상
+
+#### ✅ 설문 제목 및 설명 수정
+
+![설문지 제목](https://github.com/pie-sfac/2-15-onePunch/assets/114569429/40349b03-b489-4315-bcb4-46880525b8a7)
+
+#### ✅ 설문유형(단답형)
+
+![설문지_단답형](https://github.com/pie-sfac/2-15-onePunch/assets/114569429/d5626d0d-fc1d-4151-b3c0-d1005549cf29)
+
+#### ✅ 설문유형(장문형)
+
+![설문지_장문형](https://github.com/pie-sfac/2-15-onePunch/assets/114569429/2aff0dfa-c773-4f73-ae35-7cfa130286c1)
+
+#### ✅ 설문유형(객관식)
+
+![설문지_객관식](https://github.com/pie-sfac/2-15-onePunch/assets/114569429/464e9750-76c0-46a4-a6f8-f183c02ab492)
+
+#### ✅ 설문유형(체크박스)
+
+![설문지_체크박스](https://github.com/pie-sfac/2-15-onePunch/assets/114569429/5f65fae3-7b89-4cad-ae41-3d2ea60dbf76)
+
+#### ✅ 설문유형(최종)
+
+![설문지_최종](https://github.com/pie-sfac/2-15-onePunch/assets/114569429/d9bbf580-ba02-4547-a4e8-36595e2ac1be)
+
